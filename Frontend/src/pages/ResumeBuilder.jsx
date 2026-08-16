@@ -443,7 +443,7 @@ p {
 }
 
 ul {
-  margin: 4px 0 6px 16px;
+  margin: 4px 0 6px 15px;
   padding: 0;
 }
 
