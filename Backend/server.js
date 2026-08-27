@@ -8,28 +8,29 @@ import aiRouters from "./routes/aiRoutes.js";
 import mockInterviewRoutes from "./routes/mockInterviewRoutes.js";
 import chatbotRoutes from "./routes/chatbotRoutes.js";
 import debateRoutes from "./routes/debateRoutes.js";
+
 // Database Connection
 await connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS for all origins and handle preflight OPTIONS immediately
+app.use(cors());
+
 // Increase body size limit to handle large screenshot uploads (base64 images)
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use(cors());
 
-app.get('/' ,(req , res) => res.send("Server is live..."))
+app.get('/', (req, res) => res.send("Server is live..."));
 
+app.use('/api/users', userRouter);
+app.use('/api/resumes', resumeRouter);
+app.use('/api/ai', aiRouters);
+app.use("/api/mock-interview", mockInterviewRoutes);
+app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/debate", debateRoutes);
 
-app.use('/api/users' , userRouter)
-app.use('/api/resumes' , resumeRouter)
-app.use('/api/ai' , aiRouters)
-app.use("/api/mock-interview", mockInterviewRoutes)
-app.use("/api/chatbot", chatbotRoutes)
-app.use("/api/debate", debateRoutes)
-
-
-app.listen(PORT , () =>{
-    console.log(`Server is running on port ${PORT}`);
-})
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
